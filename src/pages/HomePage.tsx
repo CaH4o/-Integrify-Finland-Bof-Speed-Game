@@ -1,9 +1,35 @@
-import React from 'react'
+import { Button, Typography } from "@mui/material";
 
-const HomePage = () => {
+export default function HomePage(): JSX.Element {
+  //- a `button` that starts the game
+  //- a `button` that stops the game
+  //- a `button` that resets the game
+  //- a `div` that shows the current score
+  //- a `div` that shows the current level
+
   return (
-    <div>HomePage</div>
-  )
+    <div>
+      <header className="App-header flexClmnCenter">
+        <Typography>Speed Game App - Extra assignment</Typography>
+      </header>
+      <main className="App-main flexClmnCenter">
+        <Button variant="outlined" className="btn">
+          Starts a new game
+        </Button>
+        <Button variant="outlined" className="btn">
+          Stops the game
+        </Button>
+        <Button variant="outlined" className="btn">
+          Resets the game
+        </Button>
+        <div className="App-header flexCenter">
+          <Typography component="div">Score: {0}</Typography>
+          <Typography component="div">Level: {0}</Typography>
+        </div>
+      </main>
+      <footer className="App-footer flexClmnCenter">
+        <Typography>&copy; Copyright, Integrify, OTI, 2023</Typography>
+      </footer>
+    </div>
+  );
 }
-
-export default HomePage
