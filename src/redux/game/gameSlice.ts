@@ -1,12 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { gameState } from "../../types/Game";
+import { GameState } from "../../types/Game";
 
-const initialState: gameState = {
+const initialState: GameState = {
   score: 0,
   isRunning: false,
-  startTime: "0:0",
-  endTime: "0:0",
+  startTime: "hh:mm:ss",
+  endTime: "hh:mm:ss",
   level: 1,
   speed: 1,
 };
@@ -15,22 +15,22 @@ const gameSlice = createSlice({
   name: "gameSlice",
   initialState,
   reducers: {
-    startGame: function (state: gameState) {
+    startGame: function (state: GameState) {
       return state;
     },
-    endGame: function (state: gameState) {
+    endGame: function (state: GameState) {
       return state;
     },
-    increaseScore: function (state: gameState) {
+    increaseScore: function (state: GameState) {
       return state;
     },
-    decreaseLives: function (state: gameState) {
+    decreaseLives: function (state: GameState) {
       return state;
     },
-    increaseLevel: function (state: gameState) {
+    increaseLevel: function (state: GameState) {
       return state;
     },
-    decreaseTimer: function (state: gameState) {
+    decreaseTimer: function (state: GameState) {
       return state;
     },
   },

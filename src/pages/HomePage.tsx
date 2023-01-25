@@ -1,11 +1,6 @@
 import { Button, Typography } from "@mui/material";
 
 export default function HomePage(): JSX.Element {
-  //- a `button` that starts the game
-  //- a `button` that stops the game
-  //- a `button` that resets the game
-  //- a `div` that shows the current score
-  //- a `div` that shows the current level
 
   return (
     <div>
