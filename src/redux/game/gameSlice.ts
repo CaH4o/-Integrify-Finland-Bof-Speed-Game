@@ -16,10 +16,12 @@ const gameSlice = createSlice({
   initialState,
   reducers: {
     startGame: function (state: GameState) {
-      return state;
+      const isRunning: boolean = true;
+      return {...state, isRunning};
     },
     endGame: function (state: GameState) {
-      return state;
+      const isRunning: boolean = false;
+      return {...state, isRunning};
     },
     increaseScore: function (state: GameState) {
       return state;
