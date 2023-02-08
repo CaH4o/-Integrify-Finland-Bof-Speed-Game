@@ -8,8 +8,17 @@ export interface GameState {
 }
 
 export interface Circle {
+  id: string;
   size: number;
   color: string;
-  handleClick(): void;
   isTarget: boolean;
+  top: string;
+  left: string;
 }
+
+export interface CircleProp {
+  circle: Circle;
+  handleClick(circle: Circle): void;
+}
+
+export type Circles = Circle[];

@@ -1,28 +1,29 @@
 import { useState } from "react";
 import { Box, Typography } from "@mui/material";
 
-import { Circle, GameState } from "../types/Game";
+import { Circle, Circles, GameState } from "../types/Game";
 import { RootState } from "../app/store";
 import { useAppSelector } from "../app/hooks";
 import Menu from "../components/Menu";
 import Scores from "../components/Scores";
 import { Circle as RenderCircle } from "../components/Circle";
+import { createCurcles } from "../app/functions";
 
 export default function HomePage(): JSX.Element {
-  const [circle, setCircle] = useState<Circle>({
-    color: "black",
-    isTarget: false,
-    size: 4,
-    handleClick,
-  });
   const gameState: GameState = useAppSelector(function (state: RootState) {
     return state.game;
   });
   const isRunning: boolean = gameState.isRunning;
+  const level: number = gameState.level;
+  const [circles, setCircles] = useState<Circles>(createCurcles(level));
 
-  function handleClick() {
-    const isTarget: boolean = !circle.isTarget;
-    setCircle({ ...circle, isTarget });
+
+  function handleClick(circle: Circle) {
+    const newCircle: Circle = circles.find(function (c: Circle) {
+      return c.id === circle.id;
+    })!;
+    newCircle.isTarget = !newCircle.isTarget;
+    setCircles([...circles, newCircle]);
   }
 
   return (
@@ -40,7 +41,9 @@ export default function HomePage(): JSX.Element {
       </Box>
       <Box component="main" className="App-main flexClmnCenter">
         {isRunning ? (
-          <RenderCircle {...circle} />
+          circles.map(function (circle: Circle) {
+            return <RenderCircle key={circle.id} circle={circle} handleClick={handleClick} />;
+          })
         ) : (
           <Box component="div" className="flexClmnCenter">
             <Menu />

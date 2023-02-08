@@ -1,14 +1,14 @@
 import { Box } from "@mui/material";
 
-import { Circle as CircleProps } from "../types/Game";
+import { CircleProp } from "../types/Game";
 
-export function Circle(props: CircleProps): JSX.Element {
-  const p: number = props.size;
-  const bgcolor: string = props.color;
-  const isTarget: boolean = props.isTarget;
+export function Circle(props: CircleProp): JSX.Element {
+  const p: number = props.circle.size;
+  const bgcolor: string = props.circle.color;
+  const isTarget: boolean = props.circle.isTarget;
   const handleClick = props.handleClick;
-  const top: string = `${Math.random() * 75 + 15}%`;
-  const left: string = `${Math.random() * 90 + 5}%`;
+  const top: string = props.circle.top;
+  const left: string = props.circle.left;
 
   const style = {
     bgcolor,
@@ -17,12 +17,19 @@ export function Circle(props: CircleProps): JSX.Element {
     left,
     position: "absolute" as "absolute",
     transitionDuration: "0.1s",
-    //transform: "translate(-50%, -50%)",
     boxShadow: 12,
   };
 
   return (
-    <Box onClick={handleClick} className="Circle" sx={style}>
+    <Box
+      onClick={(e) =>
+        function () {
+          handleClick(props.circle);
+        }
+      }
+      className="Circle"
+      sx={style}
+    >
       {null}
     </Box>
   );

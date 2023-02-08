@@ -7,7 +7,7 @@ const initialState: GameState = {
   isRunning: false,
   startTime: "hh:mm:ss",
   endTime: "hh:mm:ss",
-  level: 1,
+  level: 3,
   speed: 1,
 };
 
