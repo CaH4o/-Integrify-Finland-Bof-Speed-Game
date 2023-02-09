@@ -8,13 +8,18 @@ export default function Scores() {
   const gameState: GameState = useAppSelector(function (state: RootState) {
     return state.game;
   });
+  const isRunning: boolean = gameState.isRunning;
   const score: number = gameState.score;
   const level: number = gameState.level;
+  const speed: number = gameState.speed;
 
   return (
     <div className="App-header flexCenter">
-      <Typography component="div">Score: {score}</Typography>
+      {isRunning ? (
+        <Typography component="div">Score: {score}</Typography>
+      ) : null}
       <Typography component="div">Level: {level}</Typography>
+      <Typography component="div">Speed: {speed}</Typography>
     </div>
   );
 }

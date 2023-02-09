@@ -1,8 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createCurcles } from "../../app/functions";
 
-import { GameState } from "../../types/Game";
+import { ICircle, Circles, GameState } from "../../types/Game";
 
 const initialState: GameState = {
+  circles: [],
   score: 0,
   isRunning: false,
   startTime: "hh:mm:ss",
@@ -16,15 +18,18 @@ const gameSlice = createSlice({
   initialState,
   reducers: {
     startGame: function (state: GameState) {
+      const circles: Circles = createCurcles(state.level);
+      const score: number = 0;
       const isRunning: boolean = true;
-      return {...state, isRunning};
+      return { ...state, circles, isRunning, score };
     },
     endGame: function (state: GameState) {
       const isRunning: boolean = false;
-      return {...state, isRunning};
+      return { ...state, isRunning };
     },
     increaseScore: function (state: GameState) {
-      return state;
+      const score: number = state.score + 1;
+      return { ...state, score };
     },
     decreaseLives: function (state: GameState) {
       return state;
@@ -34,6 +39,12 @@ const gameSlice = createSlice({
     },
     decreaseTimer: function (state: GameState) {
       return state;
+    },
+    deleteCiecle(state: GameState, action: PayloadAction<ICircle>) {
+      const circles: Circles = state.circles.filter(function (circle: ICircle) {
+        return circle.id !== action.payload.id;
+      });
+      return { ...state, circles };
     },
   },
 });
@@ -46,5 +57,6 @@ export const {
   decreaseLives,
   increaseLevel,
   decreaseTimer,
+  deleteCiecle,
 } = gameSlice.actions;
 export default gameReducer;

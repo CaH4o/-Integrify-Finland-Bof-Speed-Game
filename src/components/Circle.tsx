@@ -1,14 +1,15 @@
 import { Box } from "@mui/material";
 
-import { CircleProp } from "../types/Game";
+import { ICircle } from "../types/Game";
+import { useAppDispatch } from "../app/hooks";
+import { deleteCiecle } from "../redux/game/gameSlice";
 
-export function Circle(props: CircleProp): JSX.Element {
-  const p: number = props.circle.size;
-  const bgcolor: string = props.circle.color;
-  const isTarget: boolean = props.circle.isTarget;
-  const handleClick = props.handleClick;
-  const top: string = props.circle.top;
-  const left: string = props.circle.left;
+export default function Circle(circle: ICircle): JSX.Element {
+  const dispatch = useAppDispatch();
+  const p: number = circle.size;
+  const bgcolor: string = circle.color;
+  const top: string = circle.top;
+  const left: string = circle.left;
 
   const style = {
     bgcolor,
@@ -20,16 +21,12 @@ export function Circle(props: CircleProp): JSX.Element {
     boxShadow: 12,
   };
 
+  function handleClick() {
+    dispatch(deleteCiecle(circle));
+  }
+
   return (
-    <Box
-      onClick={(e) =>
-        function () {
-          handleClick(props.circle);
-        }
-      }
-      className="Circle"
-      sx={style}
-    >
+    <Box onClick={handleClick} className="Circle" sx={style}>
       {null}
     </Box>
   );

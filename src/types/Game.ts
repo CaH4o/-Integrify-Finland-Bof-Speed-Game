@@ -1,13 +1,4 @@
-export interface GameState {
-  score: number;
-  isRunning: boolean;
-  startTime: string;
-  endTime: string;
-  level: number;
-  speed: number;
-}
-
-export interface Circle {
+export interface ICircle {
   id: string;
   size: number;
   color: string;
@@ -16,9 +7,14 @@ export interface Circle {
   left: string;
 }
 
-export interface CircleProp {
-  circle: Circle;
-  handleClick(circle: Circle): void;
-}
+export type Circles = ICircle[];
 
-export type Circles = Circle[];
+export interface GameState {
+  circles: Circles;
+  score: number;
+  isRunning: boolean;
+  startTime: string;
+  endTime: string;
+  level: number;
+  speed: number;
+}
