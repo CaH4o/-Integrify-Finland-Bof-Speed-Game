@@ -1,6 +1,13 @@
 import { ICircle, Circles } from "../types/Game";
 
-const colors: string[] = ["black", "green", "yellow", "blue", "red"];
+const colors: string[] = [
+  "black",
+  "green",
+  "yellow",
+  "blue",
+  "red",
+  "blueviolet",
+];
 
 export function createCurcles(n: number): Circles {
   if (n < 1) return [];

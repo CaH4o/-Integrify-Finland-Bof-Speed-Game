@@ -17,4 +17,5 @@ export interface GameState {
   endTime: string;
   level: number;
   speed: number;
+  lives: boolean[];
 }

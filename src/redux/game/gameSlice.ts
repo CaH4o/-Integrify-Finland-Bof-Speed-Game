@@ -9,8 +9,9 @@ const initialState: GameState = {
   isRunning: false,
   startTime: "hh:mm:ss",
   endTime: "hh:mm:ss",
-  level: 3,
+  level: 1,
   speed: 1,
+  lives: [true, true, true, false, false],
 };
 
 const gameSlice = createSlice({
@@ -20,31 +21,55 @@ const gameSlice = createSlice({
     startGame: function (state: GameState) {
       const circles: Circles = createCurcles(state.level);
       const score: number = 0;
+      const level: number = 1;
       const isRunning: boolean = true;
-      return { ...state, circles, isRunning, score };
+      return { ...state, circles, isRunning, score, level };
     },
     endGame: function (state: GameState) {
       const isRunning: boolean = false;
       return { ...state, isRunning };
     },
-    increaseScore: function (state: GameState) {
-      const score: number = state.score + 1;
-      return { ...state, score };
-    },
     decreaseLives: function (state: GameState) {
-      return state;
+      const hasLive: boolean = state.lives.some(function (b: boolean) {
+        return b;
+      });
+
+      if (hasLive) {
+        const lives: boolean[] = [...state.lives];
+
+        for (let i = lives.length - 1; i > -1; --i) {
+          if (lives[i]) {
+            lives[i] = false;
+            break;
+          }
+        }
+
+        return { ...state, lives };
+      }
     },
     increaseLevel: function (state: GameState) {
-      return state;
+      const level: number = state.level + 1;
+      return { ...state, level };
     },
     decreaseTimer: function (state: GameState) {
       return state;
     },
     deleteCiecle(state: GameState, action: PayloadAction<ICircle>) {
-      const circles: Circles = state.circles.filter(function (circle: ICircle) {
+      let score: number = state.score;
+      let level: number = state.level;
+      let circles: Circles = state.circles.filter(function (circle: ICircle) {
         return circle.id !== action.payload.id;
       });
-      return { ...state, circles };
+
+      if (circles.length) {
+        score += 1;
+        return { ...state, circles, score };
+      } else {
+        score += 10;
+        level += 1;
+        circles = createCurcles(level);
+        return { ...state, circles, score, level };
+      }
     },
   },
 });
@@ -53,7 +78,6 @@ const gameReducer = gameSlice.reducer;
 export const {
   startGame,
   endGame,
-  increaseScore,
   decreaseLives,
   increaseLevel,
   decreaseTimer,

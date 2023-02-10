@@ -1,4 +1,6 @@
 import { Typography } from "@mui/material";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import HeartBrokenIcon from "@mui/icons-material/HeartBroken";
 
 import { useAppSelector } from "../app/hooks";
 import { RootState } from "../app/store";
@@ -12,6 +14,7 @@ export default function Scores() {
   const score: number = gameState.score;
   const level: number = gameState.level;
   const speed: number = gameState.speed;
+  const lives: boolean[] = gameState.lives;
 
   return (
     <div className="App-header flexCenter">
@@ -20,6 +23,15 @@ export default function Scores() {
       ) : null}
       <Typography component="div">Level: {level}</Typography>
       <Typography component="div">Speed: {speed}</Typography>
+      {isRunning
+        ? lives.map(function (b: boolean) {
+            return b ? (
+              <FavoriteIcon sx={{ color: "red" }} />
+            ) : (
+              <HeartBrokenIcon sx={{ color: "gray" }}/>
+            );
+          })
+        : null}
     </div>
   );
 }
