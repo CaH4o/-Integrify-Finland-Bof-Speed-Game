@@ -19,15 +19,17 @@ const gameSlice = createSlice({
   initialState,
   reducers: {
     startGame: function (state: GameState) {
+      const startTime:string = new Date().toDateString();
       const circles: Circles = createCurcles(state.level);
       const score: number = 0;
       const level: number = 1;
       const isRunning: boolean = true;
-      return { ...state, circles, isRunning, score, level };
+      return { ...state, circles, isRunning, score, level, startTime};
     },
     endGame: function (state: GameState) {
+      const endTime:string = new Date().toDateString();
       const isRunning: boolean = false;
-      return { ...state, isRunning };
+      return { ...state, isRunning, endTime };
     },
     decreaseLives: function (state: GameState) {
       const hasLive: boolean = state.lives.some(function (b: boolean) {
