@@ -15,6 +15,7 @@ export interface GameState {
   isRunning: boolean;
   startTime: string;
   endTime: string;
+  time: number;
   level: number;
   speed: number;
   lives: boolean[];

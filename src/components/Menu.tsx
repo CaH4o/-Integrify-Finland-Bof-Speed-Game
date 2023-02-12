@@ -13,6 +13,7 @@ export default function Menu() {
   const isRunning: boolean = gameState.isRunning;
 
   function handleStartGame() {
+    if (isRunning) dispatch(endGame());
     dispatch(startGame());
   }
 

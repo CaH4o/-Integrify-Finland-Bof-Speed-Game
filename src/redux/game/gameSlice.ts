@@ -9,9 +9,10 @@ const initialState: GameState = {
   isRunning: false,
   startTime: "hh:mm:ss",
   endTime: "hh:mm:ss",
+  time: 10,
   level: 1,
   speed: 1,
-  lives: [true, true, true, false, false],
+  lives: [true, true, true],
 };
 
 const gameSlice = createSlice({
@@ -22,14 +23,15 @@ const gameSlice = createSlice({
       const startTime:string = new Date().toDateString();
       const circles: Circles = createCurcles(state.level);
       const score: number = 0;
-      const level: number = 1;
       const isRunning: boolean = true;
-      return { ...state, circles, isRunning, score, level, startTime};
+      return { ...state, circles, isRunning, score, startTime};
     },
     endGame: function (state: GameState) {
       const endTime:string = new Date().toDateString();
       const isRunning: boolean = false;
-      return { ...state, isRunning, endTime };
+      const lives: boolean[] = [true, true, true];
+      const level: number = 1;
+      return { ...state, isRunning, endTime, lives, level };
     },
     decreaseLives: function (state: GameState) {
       const hasLive: boolean = state.lives.some(function (b: boolean) {
@@ -50,11 +52,29 @@ const gameSlice = createSlice({
       }
     },
     increaseLevel: function (state: GameState) {
+      if (state.level === 20) return;
       const level: number = state.level + 1;
       return { ...state, level };
     },
+    decreaseLevel: function (state: GameState) {
+      if (state.level === 1) return;
+      const level: number = state.level - 1;
+      return { ...state, level };
+    },
+    decreaseSpeed: function (state: GameState) {
+      if (state.speed === 1) return;
+      const speed: number = state.speed - 1;
+      return { ...state, speed };
+    },
+    increaseSpeed: function (state: GameState) {
+      if (state.speed === 10) return;
+      const speed: number = state.speed + 1;
+      return { ...state, speed };
+    },
     decreaseTimer: function (state: GameState) {
-      return state;
+      if (state.time === 10) return;
+      const time = state.time - 1;
+      return { ...state, time };
     },
     deleteCiecle(state: GameState, action: PayloadAction<ICircle>) {
       let score: number = state.score;
@@ -82,6 +102,9 @@ export const {
   endGame,
   decreaseLives,
   increaseLevel,
+  decreaseLevel,
+  increaseSpeed,
+  decreaseSpeed,
   decreaseTimer,
   deleteCiecle,
 } = gameSlice.actions;

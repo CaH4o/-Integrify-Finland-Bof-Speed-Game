@@ -1,13 +1,24 @@
-import { Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Typography, Button } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import HeartBrokenIcon from "@mui/icons-material/HeartBroken";
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
-import { useAppSelector } from "../app/hooks";
 import { RootState } from "../app/store";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { GameState } from "../types/Game";
-import { useEffect, useState } from "react";
+import {
+  increaseLevel,
+  decreaseLevel,
+  increaseSpeed,
+  decreaseSpeed,
+  decreaseLives,
+  endGame,
+} from "../redux/game/gameSlice";
 
 export default function Scores() {
+  const dispatch = useAppDispatch();
   const gameState: GameState = useAppSelector(function (state: RootState) {
     return state.game;
   });
@@ -16,29 +27,59 @@ export default function Scores() {
   const level: number = gameState.level;
   const speed: number = gameState.speed;
   const lives: boolean[] = gameState.lives;
-  const gameDuration: number = 10;
+  const gameDuration: number = gameState.time;
   const [time, setTime] = useState<number>(gameDuration);
+  let timer: NodeJS.Timeout | undefined = undefined;
 
   useEffect(
     function () {
-      let timer;
-      if (time > 0) {
-        const timer = setTimeout(handleTime, 1000);
+      if (isRunning) {
+        if (time > 0) {
+          timer = setTimeout(handleTime, 5000 / speed  );
+        } else {
+          dispatch(decreaseLives());
+        }
+
+        return function () {
+          clearTimeout(timer);
+        };
       }
-      return clearTimeout(timer);
     },
     [time]
   );
 
   useEffect(
     function () {
-      setTime(gameDuration);
+      const isAlive: boolean = lives.some(function (b: boolean) {
+        return b;
+      });
+      if (isAlive) {
+        setTime(gameDuration);
+      } else {
+        dispatch(endGame());
+      }
     },
-    [level]
+    [level, lives]
   );
 
   function handleTime() {
     setTime(time - 1);
+  }
+
+  function handleLevelUp() {
+    dispatch(increaseLevel());
+  }
+
+  function handleLevelDown() {
+    dispatch(decreaseLevel());
+  }
+
+  function handleSpeedUp() {
+    dispatch(increaseSpeed());
+  }
+
+  function handleSpeedDown() {
+    dispatch(decreaseSpeed());
   }
 
   return (
@@ -46,8 +87,35 @@ export default function Scores() {
       {isRunning ? (
         <Typography component="div">Score: {score}</Typography>
       ) : null}
-      <Typography component="div">Level: {level}</Typography>
-      <Typography component="div">Speed: {speed}</Typography>
+
+      <div>
+        {!isRunning ? (
+          <Button onClick={handleLevelUp}>
+            <ArrowDropUpIcon />
+          </Button>
+        ) : null}
+        <Typography component="div">Level: {level}</Typography>
+        {!isRunning ? (
+          <Button onClick={handleLevelDown}>
+            <ArrowDropDownIcon />
+          </Button>
+        ) : null}
+      </div>
+
+      <div>
+        {!isRunning ? (
+          <Button onClick={handleSpeedUp}>
+            <ArrowDropUpIcon />
+          </Button>
+        ) : null}
+        <Typography component="div">Speed: {speed}</Typography>
+        {!isRunning ? (
+          <Button onClick={handleSpeedDown}>
+            <ArrowDropDownIcon />
+          </Button>
+        ) : null}
+      </div>
+
       {isRunning
         ? lives.map(function (b: boolean, i: number) {
             return b ? (
@@ -57,7 +125,8 @@ export default function Scores() {
             );
           })
         : null}
-        <Typography component="div">Time: {time}</Typography>
+
+      {isRunning ? <Typography component="div">Time: {time}</Typography> : null}
     </div>
   );
 }
