@@ -1,8 +1,9 @@
 import { Box } from "@mui/material";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 import { ICircle } from "../types/Game";
 import { useAppDispatch } from "../app/hooks";
-import { deleteCiecle } from "../redux/game/gameSlice";
+import { deleteCiecle, increaseLives } from "../redux/game/gameSlice";
 
 export default function Circle(circle: ICircle): JSX.Element {
   const dispatch = useAppDispatch();
@@ -10,6 +11,8 @@ export default function Circle(circle: ICircle): JSX.Element {
   const bgcolor: string = circle.color;
   const top: string = circle.top;
   const left: string = circle.left;
+  const randomInt: number = parseInt((Math.random() * 1000).toString());
+  const isLife: boolean = randomInt <= 5;
 
   const style = {
     bgcolor,
@@ -23,11 +26,12 @@ export default function Circle(circle: ICircle): JSX.Element {
 
   function handleClick() {
     dispatch(deleteCiecle(circle));
+    if (isLife) dispatch(increaseLives());
   }
 
   return (
     <Box onClick={handleClick} className="Circle" sx={style}>
-      {null}
+      {isLife ? <FavoriteIcon /> : null}
     </Box>
   );
 }

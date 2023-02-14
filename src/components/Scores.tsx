@@ -35,7 +35,7 @@ export default function Scores() {
     function () {
       if (isRunning) {
         if (time > 0) {
-          timer = setTimeout(handleTime, 5000 / speed  );
+          timer = setTimeout(handleTime, 2000 / speed  );
         } else {
           dispatch(decreaseLives());
         }

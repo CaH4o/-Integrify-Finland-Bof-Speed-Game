@@ -20,18 +20,38 @@ const gameSlice = createSlice({
   initialState,
   reducers: {
     startGame: function (state: GameState) {
-      const startTime:string = new Date().toDateString();
-      const circles: Circles = createCurcles(state.level);
+      const startTime: string = new Date().toDateString();
+      const circles: Circles = createCurcles(state.level + 10);
       const score: number = 0;
       const isRunning: boolean = true;
-      return { ...state, circles, isRunning, score, startTime};
+      return { ...state, circles, isRunning, score, startTime };
     },
     endGame: function (state: GameState) {
-      const endTime:string = new Date().toDateString();
+      const endTime: string = new Date().toDateString();
       const isRunning: boolean = false;
       const lives: boolean[] = [true, true, true];
       const level: number = 1;
       return { ...state, isRunning, endTime, lives, level };
+    },
+    increaseLives: function (state: GameState) {
+      const lives: boolean[] = [...state.lives];
+
+      const hasBroken: boolean = lives.some(function (b: boolean) {
+        return !b;
+      });
+
+      if (hasBroken) {
+        for (let i = 0; i < lives.length; ++i) {
+          if (!lives[i]) {
+            lives[i] = true;
+            break;
+          }
+        }
+      } else {
+        lives.push(true);
+      }
+
+      return { ...state, lives };
     },
     decreaseLives: function (state: GameState) {
       const hasLive: boolean = state.lives.some(function (b: boolean) {
@@ -52,7 +72,7 @@ const gameSlice = createSlice({
       }
     },
     increaseLevel: function (state: GameState) {
-      if (state.level === 20) return;
+      if (state.level === 10) return;
       const level: number = state.level + 1;
       return { ...state, level };
     },
@@ -67,7 +87,7 @@ const gameSlice = createSlice({
       return { ...state, speed };
     },
     increaseSpeed: function (state: GameState) {
-      if (state.speed === 10) return;
+      if (state.speed === 5) return;
       const speed: number = state.speed + 1;
       return { ...state, speed };
     },
@@ -79,6 +99,7 @@ const gameSlice = createSlice({
     deleteCiecle(state: GameState, action: PayloadAction<ICircle>) {
       let score: number = state.score;
       let level: number = state.level;
+      let speed: number = state.speed;
       let circles: Circles = state.circles.filter(function (circle: ICircle) {
         return circle.id !== action.payload.id;
       });
@@ -87,10 +108,11 @@ const gameSlice = createSlice({
         score += 1;
         return { ...state, circles, score };
       } else {
+        if (!(level % 4)) speed += 1;
         score += 10;
         level += 1;
-        circles = createCurcles(level);
-        return { ...state, circles, score, level };
+        circles = createCurcles(level + 10);
+        return { ...state, circles, score, level, speed };
       }
     },
   },
@@ -100,6 +122,7 @@ const gameReducer = gameSlice.reducer;
 export const {
   startGame,
   endGame,
+  increaseLives,
   decreaseLives,
   increaseLevel,
   decreaseLevel,
