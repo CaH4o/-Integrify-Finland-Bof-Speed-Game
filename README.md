@@ -89,3 +89,13 @@ Take your time to implement the following features:
    ![sample2](media/sample2.png)
 
 3. [Online reference](https://miro.com/app/board/uXjVPDjtQ1k=/)
+
+### Used materials
+sounds guide
+https://www.joshwcomeau.com/react/announcing-use-sound-react-hook/
+
+use sound documantation
+https://www.npmjs.com/package/use-sound
+
+take sounds effects
+https://pixabay.com/sound-effects/search/clicks/

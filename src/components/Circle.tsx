@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import useSound from "use-sound";
 
 import { ICircle } from "../types/Game";
 import { useAppDispatch } from "../app/hooks";
@@ -13,6 +14,8 @@ export default function Circle(circle: ICircle): JSX.Element {
   const left: string = circle.left;
   const randomInt: number = parseInt((Math.random() * 1000).toString());
   const isLife: boolean = randomInt <= 5;
+  const circleClickedURL: string = "../assets/circle_click.mp3";
+  const [playCircleClicked] = useSound(circleClickedURL, { volume: 0.9 });
 
   const style = {
     bgcolor,
@@ -25,6 +28,7 @@ export default function Circle(circle: ICircle): JSX.Element {
   };
 
   function handleClick() {
+    playCircleClicked();
     dispatch(deleteCiecle(circle));
     if (isLife) dispatch(increaseLives());
   }
