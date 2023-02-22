@@ -1,10 +1,12 @@
+import React from "react";
 import { Box } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import useSound from "use-sound";
 
 import { ICircle } from "../types/Game";
 import { useAppDispatch } from "../app/hooks";
 import { deleteCiecle, increaseLives } from "../redux/game/gameSlice";
+import { useAudio } from "./useAudio";
+
 
 export default function Circle(circle: ICircle): JSX.Element {
   const dispatch = useAppDispatch();
@@ -15,7 +17,7 @@ export default function Circle(circle: ICircle): JSX.Element {
   const randomInt: number = parseInt((Math.random() * 1000).toString());
   const isLife: boolean = randomInt <= 5;
   const circleClickedURL: string = "../assets/circle_click.mp3";
-  const [playCircleClicked] = useSound(circleClickedURL, { volume: 0.9 });
+  const [playing, toggle] = useAudio(circleClickedURL);
 
   const style = {
     bgcolor,
@@ -28,7 +30,7 @@ export default function Circle(circle: ICircle): JSX.Element {
   };
 
   function handleClick() {
-    playCircleClicked();
+    toggle();
     dispatch(deleteCiecle(circle));
     if (isLife) dispatch(increaseLives());
   }
