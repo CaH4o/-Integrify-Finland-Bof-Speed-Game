@@ -92,7 +92,7 @@ const gameSlice = createSlice({
       return { ...state, speed };
     },
     decreaseTimer: function (state: GameState) {
-      if (state.time === 10) return;
+      if (state.time === 0) return;
       const time = state.time - 1;
       return { ...state, time };
     },
